@@ -1,5 +1,5 @@
 <script setup>
-import { artGetChannelsService } from '@/api/article'
+import { artDelService, artGetChannelsService } from '@/api/article'
 import ChannelSelect from './components/ChannelSelect.vue'
 import { Edit, Delete } from '@element-plus/icons-vue'
 import { ref } from 'vue'
@@ -86,6 +86,20 @@ const onPublishSuccess = (type) => {
   }
   getChannelList()
 }
+
+// 删除逻辑
+const onDeleteArticle = async (row) => {
+  // 提示用户是否要删除
+  await ElMessageBox.confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
+  await artDelService(row.id)
+  ElMessage.success('删除成功')
+  // 重新渲染列表
+  getChannelList()
+}
 </script>
 <template>
   <page-container title="添加教材">
@@ -133,7 +147,7 @@ const onPublishSuccess = (type) => {
           ></el-button>
           <el-button
             type="danger"
-            @click="onDel(row)"
+            @click="onDeleteArticle(row)"
             :icon="Delete"
             circle
           ></el-button>
