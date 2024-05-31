@@ -135,7 +135,11 @@ const onDeleteArticle = async (row) => {
           {{ formatTime(row.pub_date) }}
         </template>
       </el-table-column>
-      <el-table-column label="状态" prop="state"></el-table-column>
+      <el-table-column label="状态" prop="state">
+        <template #default="{ row }">
+          {{ row.state === '已发布' ? '已完成' : '未完成' }}
+        </template>
+      </el-table-column>
       <!-- 利用作用域插槽row可以获取当前行的数据 => v-for遍历item- -->
       <el-table-column label="操作">
         <template #default="{ row }">
